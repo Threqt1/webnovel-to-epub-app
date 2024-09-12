@@ -5,8 +5,6 @@ import {
     FormHelperText,
     FormLabel,
     Input,
-    InputGroup,
-    InputLeftAddon,
     NumberDecrementStepper,
     NumberIncrementStepper,
     NumberInput,
@@ -18,7 +16,19 @@ import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 
 const baseOptionsSchema = Yup.object().shape({
-    url: Yup.string().url("Invalid URL").required("Must input a URL"),
+    url: Yup.string()
+        .url("Invalid URL")
+        .required("Must input a URL")
+        .test(
+            "scraper-exists",
+            "Scraper doesn't exist for this URL",
+            async (value) => {
+                let scraper = await window.electronAPI.checkScraperExistence(
+                    value
+                );
+                return scraper;
+            }
+        ),
     concurrency: Yup.number().required("Must input a number"),
     timeout: Yup.number().required("Must input a number"),
 });
@@ -38,8 +48,8 @@ export default function BaseOptionsPrompt(props: {
                 timeout: 10000,
             }}
             validationSchema={baseOptionsSchema}
-            onSubmit={(values, actions) => {
-                console.log(values, actions);
+            onSubmit={(values) => {
+                props.submit(values);
             }}
         >
             {({ errors, touched, setFieldValue }) => (
@@ -76,8 +86,12 @@ export default function BaseOptionsPrompt(props: {
                                     <NumberInput
                                         defaultValue={field.value}
                                         onChange={(value) =>
-                                            setFieldValue("concurrency", value)
+                                            setFieldValue(
+                                                "concurrency",
+                                                parseInt(value)
+                                            )
                                         }
+                                        min={1}
                                     >
                                         <NumberInputField />
                                         <NumberInputStepper>
@@ -104,9 +118,13 @@ export default function BaseOptionsPrompt(props: {
                                     <NumberInput
                                         defaultValue={field.value}
                                         onChange={(value) =>
-                                            setFieldValue("timeout", value)
+                                            setFieldValue(
+                                                "timeout",
+                                                parseInt(value)
+                                            )
                                         }
                                         step={1000}
+                                        min={100}
                                     >
                                         <NumberInputField />
                                         <NumberInputStepper>

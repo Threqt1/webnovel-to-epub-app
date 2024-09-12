@@ -1,31 +1,22 @@
-import {
-    Box,
-    Center,
-    Heading,
-    List,
-    ListItem,
-    Progress,
-    Stack,
-    UnorderedList,
-} from "@chakra-ui/react";
+import { Center, Spinner, Stack, Text } from "@chakra-ui/react";
 
 export default function ParseDetailsView() {
     return (
         <Center className="w-full h-full">
-            <Stack className="grow" direction={"column"} spacing={"20px"}>
-                <Progress className="w-full grow" hasStripe value={50} />
-                <Center>
-                    <UnorderedList>
-                        <ListItem>H</ListItem>
-                        <ListItem>H</ListItem>
-                        <ListItem>H</ListItem>
-                        <ListItem>H</ListItem>
-                        <ListItem>H</ListItem>
-                        <ListItem>H</ListItem>
-                        <ListItem>Edward is a bitch</ListItem>
-                        <ListItem>H</ListItem>
-                    </UnorderedList>
-                </Center>
+            <Stack
+                dir="column"
+                className="w-1/2"
+                align={"center"}
+                spacing={"15px"}
+            >
+                <Spinner
+                    thickness="4px"
+                    speed="0.65s"
+                    emptyColor="gray.200"
+                    color="blue.500"
+                    size="xl"
+                />
+                <Text>Loading Webnovel Data...</Text>
             </Stack>
         </Center>
     );

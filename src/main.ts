@@ -1,12 +1,21 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcMain } from "electron";
 import path from "path";
+import { findCorrectScraper } from "./backend/scrapers/scaperBucket";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
     app.quit();
 }
 
+async function checkScraperExistence(url: string): Promise<boolean> {
+    return findCorrectScraper(url) !== undefined;
+}
+
 const createWindow = async () => {
+    ipcMain.handle("scraper:checkScraperExistence", (_, url: string) => {
+        return checkScraperExistence(url);
+    });
+
     // Create the browser window.
     const mainWindow = new BrowserWindow({
         width: 800,

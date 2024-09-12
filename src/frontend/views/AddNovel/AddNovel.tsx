@@ -14,6 +14,7 @@ import {
 import { useState } from "react";
 import BaseOptionsPrompt from "./BaseOptionsPrompt";
 import ParseDetailsView from "./ParseDetailsView";
+import MiscDetailsView from "./MiscDetailsView";
 
 const steps: string[] = [
     "Configure Base Options",
@@ -33,10 +34,19 @@ export default function AddNovel() {
         timeout: number;
     }) {}
 
+    function onSubmitMiscOptionsPrompt(values: {
+        imageQuality: number;
+        imageShouldResize: boolean;
+        imageWidth: number;
+        imageHeight: number;
+    }) {}
+
     const [activeView, setActiveView] = useState(
-        //<BaseOptionsPrompt submit={onSubmitBaseOptionsPrompt} />
-        <ParseDetailsView />
+        <BaseOptionsPrompt submit={onSubmitBaseOptionsPrompt} />
     );
+    // <BaseOptionsPrompt submit={onSubmitBaseOptionsPrompt} />
+    // <ParseDetailsView />
+    //<MiscDetailsView submit={onSubmitBaseOptionsPrompt} />
 
     return (
         <Stack direction="column" className="w-full h-full" spacing="20px">

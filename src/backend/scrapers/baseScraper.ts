@@ -55,7 +55,12 @@ export abstract class Scraper {
     }
 
     protected baseMatchURL(url: string, urls: string[]): boolean {
-        let parsed = new URL(url);
+        let parsed: URL | undefined;
+        try {
+            parsed = new URL(url);
+        } catch (e) {}
+
+        if (!parsed) return false;
 
         return urls.includes(
             parsed.hostname.split(".").slice(-2).join(".").trim().toLowerCase()
